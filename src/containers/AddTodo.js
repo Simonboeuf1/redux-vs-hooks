@@ -1,10 +1,11 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import {useContext} from 'react';
+import { AppContext } from '../components/App';
 import { addTodo } from '../actions'
 
-const AddTodo = ({ dispatch }) => {
+const AddTodo = () => {
   let input
-
+  const {dispatch} = useContext(AppContext);
   return (
     <div>
       <form id="addTodo" onSubmit={e => {
@@ -24,4 +25,4 @@ const AddTodo = ({ dispatch }) => {
   )
 }
 
-export default connect()(AddTodo)
+export default AddTodo

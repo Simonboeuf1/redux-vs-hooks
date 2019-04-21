@@ -1,4 +1,5 @@
-import { connect } from 'react-redux'
+import React, {useContext} from 'react';
+import {AppContext} from '../components/App'
 import { toggleTodo } from '../actions'
 import TodoList from '../components/TodoList'
 import { VisibilityFilters } from '../actions'
@@ -24,7 +25,11 @@ const mapDispatchToProps = dispatch => ({
   toggleTodo: id => dispatch(toggleTodo(id))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TodoList)
+const ConnectedTodoList = () => {
+  const {state, dispatch} = useContext(AppContext);
+  const stateProps = mapStateToProps(state);
+  const actionProps = mapDispatchToProps(dispatch);
+  return <TodoList {...stateProps} {...actionProps} />
+};
+
+export default ConnectedTodoList;
