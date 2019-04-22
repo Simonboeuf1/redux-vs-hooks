@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import {AppContext} from "../index"
+import React from 'react';
+import {useConnect} from "../index"
 import { toggleTodo } from '../actions'
 import TodoList from '../components/TodoList'
 import { VisibilityFilters } from '../actions'
@@ -26,10 +26,9 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const ConnectedTodoList = () => {
-  const {state, dispatch} = useContext(AppContext);
-  const stateProps = mapStateToProps(state);
-  const actionProps = mapDispatchToProps(dispatch);
-  return <TodoList {...stateProps} {...actionProps} />
+  const {todos, toggleTodo} = useConnect({mapStateToProps, mapDispatchToProps});
+
+  return <TodoList todos={todos} toggleTodo={toggleTodo} />
 };
 
 export default ConnectedTodoList;

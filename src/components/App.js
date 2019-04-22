@@ -1,23 +1,17 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import Footer from './Footer'
 import AddTodo from '../containers/AddTodo'
 import VisibleTodoList from '../containers/VisibleTodoList'
-import { store, AppContext } from '../index';
+import { Provider } from '../index'; 
 
 const App = () => {
-  const [state, setState] = useState(() => store.getState());
-  
-  useEffect(() => {
-    store.subscribe(() => setState(store.getState()));
-  }, []);
-
-  return (
+    return (
     <div>
-      <AppContext.Provider value={{state, dispatch: store.dispatch}}>
+      <Provider>
         <AddTodo />
         <VisibleTodoList />
         <Footer />
-      </AppContext.Provider>
+      </Provider>
     </div>
   )
 }

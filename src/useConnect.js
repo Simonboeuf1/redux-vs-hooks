@@ -1,41 +1,38 @@
-import { createStore } from "redux";
-import React from 'react';
+
+import {createStore, applyMiddleware} from 'redux';
+import React, {createContext, useContext, useState, useEffect} from 'react';
 
 const INITIAL_ACTION = {
-  type: "__INIT__USECONNECT__"
+  type: "__INIT__USECONNECT"
 }
 
 const INITIAL_STATE = {};
 
-const useConnect = (state, dispatch, mapStateToProps, mapDispatchToProps, ownProps = {}) => {
-  const stateProps = mapStateToProps(state, ownProps);
-  const dispatchers = mapDispatchToProps(dispatch, ownProps);
-
-  return {...stateProps, ...dispatchers};
-}
-
-const createUseConnect = (reducer, middlewares) => {
-  const store = createStore(reducer, ...middlewares);
-  const Context = React.createContext();
+export const createUseConnect = (reducer, middlewares) => {
+  const store = createStore(reducer, applyMiddleware(...middlewares));
   const initialState = reducer(INITIAL_STATE, INITIAL_ACTION);
+  const dispatch = store.dispatch;
+  const Context = createContext();
 
   const Provider = ({children}) => {
-    const [state, setState] = React.useState(initialState);
-    React.useEffect(() => {
+    const [state, setState] = useState(initialState);
+    useEffect(() => {
       store.subscribe(() => setState(store.getState()));
     }, []);
-
-    return <Context.Provider value={{state, dispatch: store.dispatch}}>{children}</Context.Provider>
+   return (
+      <Context.Provider value={{state, dispatch}}>
+        {children}
+      </Context.Provider>
+    )
   }
 
-  const useConnect = ({mapStateToProps, mapDispatchToProps, ownProps = {}}) => {
-    const {state, dispatch} = React.useContext()
+  const useConnect = ({mapStateToProps = () => {}, mapDispatchToProps = () => {}, ownProps = {}}) => {
+    const {state, dispatch} = useContext(Context);
     const stateProps = mapStateToProps(state, ownProps);
-    const dispatchers = mapDispatchToProps(dispatch, ownProps);
-    return {...ownProps, ...stateProps, ...dispatchers};
+    const actionDispatchers = mapDispatchToProps(dispatch, ownProps);
+
+    return {...stateProps, ...actionDispatchers};
   }
 
-  return [Provider, useConnect];
-}
-
-export default createUseConnect;
+  return {Provider, useConnect};
+};
