@@ -1,11 +1,14 @@
 import React from 'react'
-import {useContext} from 'react';
-import { AppContext } from '../index';
+import { useConnect } from '../index';
 import { addTodo } from '../actions'
+
+const mapDispatchToProps = (dispatch) => ({
+  addTodo: (value) => dispatch(addTodo(value))
+})
 
 const AddTodo = () => {
   let input
-  const {dispatch} = useContext(AppContext);
+  const {addTodo} = useConnect({mapDispatchToProps});
   return (
     <div>
       <form id="addTodo" onSubmit={e => {
@@ -13,7 +16,7 @@ const AddTodo = () => {
         if (!input.value.trim()) {
           return
         }
-        dispatch(addTodo(input.value))
+        addTodo(input.value)
         input.value = ''
       }}>
         <input ref={node => input = node} />
