@@ -2,7 +2,7 @@ import React from 'react'
 import Todo from './Todo'
 
 const TodoList = ({ todos, toggleTodo }) => (
-  <ul>
+  <ul id="todoList">
     {todos.map(todo =>
       <Todo
         key={todo.id}
