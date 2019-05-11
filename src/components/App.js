@@ -2,12 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Footer from './Footer'
 import AddTodo from '../containers/AddTodo'
 import VisibleTodoList from '../containers/VisibleTodoList'
-import { createStore } from 'redux'
-import rootReducer from '../reducers'
-
-export const store = createStore(rootReducer);
-
-export const AppContext = React.createContext({state: store.getState(), dispatch: store.dispatch});
+import { store, AppContext } from '../index';
 
 const App = () => {
   const [state, setState] = useState(() => store.getState());

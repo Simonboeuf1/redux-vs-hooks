@@ -1,6 +1,6 @@
 import React from 'react'
 import {useContext} from 'react';
-import { AppContext } from '../components/App';
+import { AppContext } from '../index';
 import { addTodo } from '../actions'
 
 const AddTodo = () => {
