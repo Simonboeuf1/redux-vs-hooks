@@ -1,7 +1,7 @@
 import React, { useContext} from 'react';
 import { setVisibilityFilter } from '../actions'
 import Link from '../components/Link'
-import { AppContext } from '../components/App';
+import { AppContext } from '../index';
 
 const mapStateToProps = (state, ownProps) => ({
   active: ownProps.filter === state.visibilityFilter
