@@ -1,10 +1,14 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { useConnect } from '../index';
 import { addTodo } from '../actions'
 
-const AddTodo = ({ dispatch }) => {
-  let input
+const mapDispatchToProps = (dispatch) => ({
+  addTodo: (value) => dispatch(addTodo(value))
+})
 
+const AddTodo = () => {
+  let input
+  const {addTodo} = useConnect({mapDispatchToProps});
   return (
     <div>
       <form id="addTodo" onSubmit={e => {
@@ -12,7 +16,7 @@ const AddTodo = ({ dispatch }) => {
         if (!input.value.trim()) {
           return
         }
-        dispatch(addTodo(input.value))
+        addTodo(input.value)
         input.value = ''
       }}>
         <input ref={node => input = node} />
@@ -24,4 +28,4 @@ const AddTodo = ({ dispatch }) => {
   )
 }
 
-export default connect()(AddTodo)
+export default AddTodo

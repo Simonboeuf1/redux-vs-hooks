@@ -1,16 +1,13 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { createStore, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
 import App from './components/App'
 import rootReducer from './reducers'
-import loggerMiddleware from 'redux-logger'
+import loggerMiddleware from './loggerMiddleware'
+import {createUseConnect} from "./useConnect";
 
-const store = createStore(rootReducer, applyMiddleware(loggerMiddleware));
+export const {Provider, useConnect} = createUseConnect(rootReducer, [loggerMiddleware]);
 
 render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
+      <App />
+,  document.getElementById('root')
 )
